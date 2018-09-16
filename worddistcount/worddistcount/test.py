@@ -1,13 +1,12 @@
 import unittest
-from worddistcount import find_shortest_distance
+from worddistcount import WordDistanceCounter
 
 
 class TestStringMethods(unittest.TestCase):
 
     def test_basic(self):
-        self.assertEqual(2, find_shortest_distance("We do value and reward motivation in our "
-                                                   "development team. Development "
-                                                   "is a key skill for a DevOp.", "motivation", "development"))
+        word_counter = WordDistanceCounter("test1.txt")
+        self.assertEqual(2, word_counter.find_shortest_distance("motivation", "development"))
 
 
 if __name__ == '__main__':
