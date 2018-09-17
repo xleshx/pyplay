@@ -1,3 +1,6 @@
+import argparse
+
+
 def calculate_distance(text, source, target):
     words, source, target = make_lower_case(text, source, target)
 
@@ -29,9 +32,20 @@ class WordDistanceCounter:
 
 
 def main():
-    word_counter = WordDistanceCounter("test/test_file.txt")
-    result = word_counter.find_shortest_distance("motivation", "development")
+    filename, start_word, end_word = parse_args()
+    word_counter = WordDistanceCounter(filename)
+    result = word_counter.find_shortest_distance(start_word, end_word)
     print(result)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Counts word distance between the words',
+                                     usage='%(prog)s [options]')
+    parser.add_argument('filename', help='file with the text')
+    parser.add_argument('start', help='word count start from')
+    parser.add_argument('end', help='word count ends with')
+    args = parser.parse_args()
+    return args.filename, args.start, args.end
 
 
 if __name__ == '__main__':
