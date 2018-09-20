@@ -5,8 +5,14 @@ from worddistcount import WordDistanceCounter, calculate_distance
 class TestStringMethods(unittest.TestCase):
 
     def test_integration(self):
-        """Basic integration test case with I/O op coverage"""
+        """Basic integration test case with successful path for I/O op coverage"""
         word_counter = WordDistanceCounter("test_file.txt")
+        self.assertEqual(2, word_counter.find_shortest_distance("motivation", "development"))
+
+    @unittest.skip("not there yet")
+    def test_file_not_exist(self):
+        """Integration test case for handling not existent file"""
+        word_counter = WordDistanceCounter("non-exist-ent.txt")
         self.assertEqual(2, word_counter.find_shortest_distance("motivation", "development"))
 
     def test_duplicates(self):

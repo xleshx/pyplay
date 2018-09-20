@@ -2,7 +2,7 @@ import argparse
 import string
 
 
-def calculate_distance(text: str, source: str, target: str):
+def calculate_distance(text: str, source: str, target: str) -> int:
     """Calculates a distance between source and target within text."""
 
     words, source, target = prepare_input_strings(text, source, target)
@@ -29,6 +29,19 @@ def trim_and_lower(source: str) -> str:
     return source.translate(str.maketrans('', '', string.punctuation)).lower()
 
 
+class AppError(Exception):
+    """Generic application error, suppose to be handled on highest level.
+
+    Attributes:
+        expression - input expression in which the error occurred
+        message - explanation of the error
+    """
+
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+
 class WordDistanceCounter:
     """Class expect filename in constructor but don't do any IO before call find_shortest_distance function."""
 
@@ -36,10 +49,13 @@ class WordDistanceCounter:
         self.filename = filename
 
     def load_txt_from_file(self):
-        with open(self.filename) as txtFile:
-            return txtFile.read()
+        try:
+            with open(self.filename) as txtFile:
+                return txtFile.read()
+        except IOError as e:
+            raise AppError(e, "I/O error({0}): {1}".format(e.errno, e.strerror))
 
-    def find_shortest_distance(self, source: str, target: str):
+    def find_shortest_distance(self, source: str, target: str) -> int:
         """Main find distance method.
 
          Loads the file content each time being invoked and applies calculate_distance() function on it.
@@ -52,8 +68,11 @@ class WordDistanceCounter:
 def main():
     filename, start_word, end_word = parse_args()
     word_counter = WordDistanceCounter(filename)
-    result = word_counter.find_shortest_distance(start_word, end_word)
-    print(result)
+    try:
+        result = word_counter.find_shortest_distance(start_word, end_word)
+        print(result)
+    except AppError as e:
+        print("Application error occurred")
 
 
 def parse_args():
