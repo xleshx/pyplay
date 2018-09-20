@@ -72,7 +72,7 @@ def main():
         result = word_counter.find_shortest_distance(start_word, end_word)
         print(result)
     except AppError as e:
-        print("Application error occurred")
+        print("Application error occurred", e)
 
 
 def parse_args():

@@ -1,5 +1,5 @@
 import unittest
-from worddistcount import WordDistanceCounter, calculate_distance
+from worddistcount import WordDistanceCounter, calculate_distance, AppError
 
 
 class TestStringMethods(unittest.TestCase):
@@ -9,11 +9,11 @@ class TestStringMethods(unittest.TestCase):
         word_counter = WordDistanceCounter("test_file.txt")
         self.assertEqual(2, word_counter.find_shortest_distance("motivation", "development"))
 
-    @unittest.skip("not there yet")
     def test_file_not_exist(self):
         """Integration test case for handling not existent file"""
         word_counter = WordDistanceCounter("non-exist-ent.txt")
-        self.assertEqual(2, word_counter.find_shortest_distance("motivation", "development"))
+        with self.assertRaises(AppError):
+            word_counter.find_shortest_distance("motivation", "development")
 
     def test_duplicates(self):
         """Unit test with duplicates"""
